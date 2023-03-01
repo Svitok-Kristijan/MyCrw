@@ -5,12 +5,18 @@ import "./index.scss";
 import App from "./App";
 import {UserProvider} from "./context/user.context";
 import reportWebVitals from "./reportWebVitals";
+import {ProductProvider} from "./context/product.context";
+import {CardProvider} from "./context/card.context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <UserProvider>
-      <App />
+      <ProductProvider>
+        <CardProvider>
+          <App />
+        </CardProvider>
+      </ProductProvider>
     </UserProvider>
   </BrowserRouter>
 );
