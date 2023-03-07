@@ -8,6 +8,8 @@ import {CardContext} from "../../context/card.context";
 
 const CardDropdown = () => {
   const {cardItems} = useContext(CardContext);
+  const {isCardOpen, setIsCardOpen} = useContext(CardContext);
+  const toogleIsCardClose = () => setIsCardOpen(false);
 
   return (
     <div className="cart-dropdown-container">
@@ -17,7 +19,7 @@ const CardDropdown = () => {
         ))}
       </div>
       <Link to="/checkout">
-        <Button>GO TO CHECKOUT</Button>
+        <Button onClick={toogleIsCardClose}>GO TO CHECKOUT</Button>
       </Link>
     </div>
   );

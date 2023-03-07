@@ -1,9 +1,10 @@
-import "./category-items-style.scss";
+import "./directory-items-style.scss";
+import {Link} from "react-router-dom";
 
-const CategoryItem = ({category}) => {
+const DirectoryItem = ({category}) => {
   const {imageUrl, title} = category;
   return (
-    <div className="category-container">
+    <Link to={`shop/${title}`} className="directory-item-container">
       <div
         className="background-image"
         style={{
@@ -11,12 +12,12 @@ const CategoryItem = ({category}) => {
           backgroundImage: `url(${imageUrl})`, //use string variable in another string
         }}
       />
-      <div className="category-body-container">
+      <div className="body">
         <h2>{title}</h2>
         <p>Shop Now</p>
       </div>
-    </div>
+    </Link>
   );
 };
 
-export default CategoryItem;
+export default DirectoryItem;

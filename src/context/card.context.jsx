@@ -35,7 +35,9 @@ const removeButton = (cardItems, remove) =>
   cardItems.filter((cardItem) => cardItem.id !== remove.id);
 export const CardContext = createContext({
   isCardOpen: false,
+
   setIsCardOpen: () => {},
+
   cardItems: [],
   addItemToCard: () => {},
   removeItemFromCard: () => {},
@@ -46,6 +48,7 @@ export const CardContext = createContext({
 
 export const CardProvider = ({children}) => {
   const [isCardOpen, setIsCardOpen] = useState(false);
+
   const [cardItems, setCardItems] = useState([]);
   const [cardCount, setCardCount] = useState(0);
   const [cardTotal, setCardTotal] = useState(0);
@@ -77,6 +80,7 @@ export const CardProvider = ({children}) => {
 
   const value = {
     isCardOpen,
+
     setIsCardOpen,
     addItemToCard,
     removeItemFromCard,
