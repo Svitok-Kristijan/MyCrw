@@ -1,7 +1,7 @@
 import {useState} from "react";
 import FormInput from "../form-input/form-input.component";
 import "./sing-in.style.scss";
-import Button from "../button/button.component";
+import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 
 import {
   signInWithGooglePopup,
@@ -75,8 +75,14 @@ const SignIn = () => {
           value={password}
         />
         <div className="btn-container">
-          <Button type="submit">Login</Button>
-          <Button type="button" buttonType="google" onClick={singInGoogleUser}>
+          <Button buttonType={BUTTON_TYPE_CLASSES} type="submit">
+            Login
+          </Button>
+          <Button
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            onClick={singInGoogleUser}
+          >
             Google sing in
           </Button>
         </div>

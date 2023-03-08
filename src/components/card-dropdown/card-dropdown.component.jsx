@@ -1,8 +1,12 @@
-import "./card-dropdown.style.scss";
+import {
+  CardDropdownContainer,
+  EmptyMessage,
+  CardItems,
+} from "./card-dropdown.style";
 import {useContext} from "react";
 import {Link} from "react-router-dom";
 
-import Button from "../button/button.component";
+import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 import CardItem from "../card-item/card-item.component";
 import {CardContext} from "../../context/card.context";
 
@@ -12,16 +16,20 @@ const CardDropdown = () => {
   const toogleIsCardClose = () => setIsCardOpen(false);
 
   return (
-    <div className="cart-dropdown-container">
-      <div className="cart-items">
-        {cardItems.map((item) => (
-          <CardItem key={item.id} cardItem={item} />
-        ))}
-      </div>
+    <CardDropdownContainer>
+      <CardItems>
+        {cardItems.length ? (
+          cardItems.map((item) => <CardItem key={item.id} cardItem={item} />)
+        ) : (
+          <EmptyMessage>Your card is empty</EmptyMessage>
+        )}
+      </CardItems>
       <Link to="/checkout">
-        <Button onClick={toogleIsCardClose}>GO TO CHECKOUT</Button>
+        <Button buttonType={BUTTON_TYPE_CLASSES} onClick={toogleIsCardClose}>
+          GO TO CHECKOUT
+        </Button>
       </Link>
-    </div>
+    </CardDropdownContainer>
   );
 };
 

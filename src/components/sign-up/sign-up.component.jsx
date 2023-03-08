@@ -1,7 +1,7 @@
 import {useState} from "react";
 import FormInput from "../form-input/form-input.component";
 import "./sing-up.style.scss";
-import Button from "../button/button.component";
+import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 
 import {
   createAuthUserWithEmailAndPassword,
@@ -90,7 +90,9 @@ const SingUp = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
-        <Button type="submit">Sign Up</Button>
+        <Button buttonType={BUTTON_TYPE_CLASSES} type="submit">
+          Sign Up
+        </Button>
       </form>
     </div>
   );
