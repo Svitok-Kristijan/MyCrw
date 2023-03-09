@@ -7,7 +7,7 @@ import {useContext} from "react";
 import {Link} from "react-router-dom";
 
 import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
-import CardItem from "../card-item/card-item.component";
+import CardItem from "../directory-item/card-item.component";
 import {CardContext} from "../../context/card.context";
 
 const CardDropdown = () => {

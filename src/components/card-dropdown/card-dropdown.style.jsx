@@ -23,12 +23,16 @@ export const CardDropdownContainer = styled.div`
   ${GoogleSignInButton},
   ${InvertedButton} {
     margin-top: auto;
+    font-size: 12px;
   }
 `;
 
 export const EmptyMessage = styled.span`
-  font-size: 18px;
+  font-size: 27px;
+  color: #807d7d86;
+  font-family: sans-serif;
   margin: 50px auto;
+  text-align: center;
 `;
 
 export const CardItems = styled.div`
