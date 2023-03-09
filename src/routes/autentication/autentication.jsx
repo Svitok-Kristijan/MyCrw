@@ -23,7 +23,7 @@ const Autentication = () => {
   );
 
   return (
-    <div>
+    <div className="auth">
       <SignIn />
       <div className="btn">
         <Button buttonType="google" onClick={signInWithGoogleRedirect}>
