@@ -1,47 +1,81 @@
-import {createContext, useState, useEffect} from "react";
+import {createContext, useState, useReducer} from "react";
+
+import {createAction} from "../utils/reducer/reducer.utils";
 
 const addCardItem = (cardItems, productToAdd) => {
   const existingCardItem = cardItems.find(
-    (item) => item.id === productToAdd.id
+    (cardItem) => cardItem.id === productToAdd.id
   );
 
   if (existingCardItem) {
-    return cardItems.map((item) =>
-      item.id === productToAdd.id
-        ? {...item, quantity: item.quantity + 1}
-        : item
+    return cardItems.map((cardItem) =>
+      cardItem.id === productToAdd.id
+        ? {...cardItem, quantity: cardItem.quantity + 1}
+        : cardItem
     );
   }
 
   return [...cardItems, {...productToAdd, quantity: 1}];
 };
 
-const removeCardItem = (cardItems, productToRemove) => {
+const removeCardItem = (cardItems, cardItemToRemove) => {
+  // find the cart item to remove
   const existingCardItem = cardItems.find(
-    (item) => item.id === productToRemove.id
+    (cardItem) => cardItem.id === cardItemToRemove.id
   );
 
+  // check if quantity is equal to 1, if it is remove that item from the cart
   if (existingCardItem.quantity === 1) {
-    return cardItems.filter((cardItem) => cardItem.id !== productToRemove.id);
+    return cardItems.filter((cardItem) => cardItem.id !== cardItemToRemove.id);
   }
 
-  return cardItems.map((item) =>
-    item.id === productToRemove.id
-      ? {...item, quantity: item.quantity - 1}
-      : item
+  // return back cartitems with matching cart item with reduced quantity
+  return cardItems.map((cardItem) =>
+    cardItem.id === cardItemToRemove.id
+      ? {...cardItem, quantity: cardItem.quantity - 1}
+      : cardItem
   );
 };
-const removeButton = (cardItems, remove) =>
-  cardItems.filter((cardItem) => cardItem.id !== remove.id);
+
+const CARD_ACTION_TYPES = {
+  SET_IS_CARD_OPEN: "SET_IS_CARD_OPEN",
+  SET_CARD_ITEMS: "SET_CARD_ITEMS",
+  SET_CARD_COUNT: "SET_CARD_COUNT",
+  SET_CARD_TOTAL: "SET_CARD_TOTAL",
+};
+
+const INITIAL_STATE = {
+  isCardOpen: false,
+  cardItems: [],
+  cardCount: 0,
+  cardTotal: 0,
+};
+
+const cardReducer = (state, action) => {
+  const {type, payload} = action;
+
+  switch (type) {
+    case CARD_ACTION_TYPES.SET_CARD_ITEMS:
+      return {
+        ...state,
+        ...payload,
+      };
+    default:
+      throw new Error(`Unhandled type ${type} in cardReducer`);
+  }
+};
+
+const clearCardItem = (cardItems, cardItemToClear) =>
+  cardItems.filter((cardItem) => cardItem.id !== cardItemToClear.id);
+
 export const CardContext = createContext({
   isCardOpen: false,
-
   setIsCardOpen: () => {},
-
   cardItems: [],
   addItemToCard: () => {},
   removeItemFromCard: () => {},
-  removeItemButton: () => {},
+  clearItemFromCard: () => {},
+  clearDropdown: () => {},
   cardCount: 0,
   cardTotal: 0,
 });
@@ -49,42 +83,58 @@ export const CardContext = createContext({
 export const CardProvider = ({children}) => {
   const [isCardOpen, setIsCardOpen] = useState(false);
 
-  const [cardItems, setCardItems] = useState([]);
-  const [cardCount, setCardCount] = useState(0);
-  const [cardTotal, setCardTotal] = useState(0);
+  const [{cardCount, cardTotal, cardItems}, dispatch] = useReducer(
+    cardReducer,
+    INITIAL_STATE
+  );
 
-  useEffect(() => {
+  const updateCardItemsReducer = (cardItems) => {
     const newCardCount = cardItems.reduce(
       (total, cardItem) => total + cardItem.quantity,
       0
     );
-    setCardCount(newCardCount);
-  }, [cardItems]);
-  useEffect(() => {
+
     const newCardTotal = cardItems.reduce(
       (total, cardItem) => total + cardItem.quantity * cardItem.price,
       0
     );
-    setCardTotal(newCardTotal);
-  }, [cardItems]);
+
+    const payload = {
+      cardItems,
+      cardCount: newCardCount,
+      cardTotal: newCardTotal,
+    };
+
+    dispatch(createAction(CARD_ACTION_TYPES.SET_CARD_ITEMS, payload));
+  };
 
   const addItemToCard = (productToAdd) => {
-    setCardItems(addCardItem(cardItems, productToAdd));
+    const newCardItems = addCardItem(cardItems, productToAdd);
+    updateCardItemsReducer(newCardItems);
   };
-  const removeItemFromCard = (productToRemove) => {
-    setCardItems(removeCardItem(cardItems, productToRemove));
+
+  const removeItemToCard = (cardItemToRemove) => {
+    const newCardItems = removeCardItem(cardItems, cardItemToRemove);
+    updateCardItemsReducer(newCardItems);
   };
-  const removeItemButton = (remove) => {
-    setCardItems(removeButton(cardItems, remove));
+
+  const clearItemFromCard = (cardItemToClear) => {
+    const newCardItems = clearCardItem(cardItems, cardItemToClear);
+    updateCardItemsReducer(newCardItems);
+  };
+
+  const clearDropdown = (cardItemToClear) => {
+    const newCardItems = clearCardItem(cardItems, cardItemToClear);
+    updateCardItemsReducer(newCardItems);
   };
 
   const value = {
     isCardOpen,
-
     setIsCardOpen,
     addItemToCard,
-    removeItemFromCard,
-    removeItemButton,
+    removeItemToCard,
+    clearItemFromCard,
+    clearDropdown,
     cardItems,
     cardCount,
     cardTotal,

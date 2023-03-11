@@ -27,5 +27,30 @@
     margin-top: 30px;
     margin-left: auto;
     font-size: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .button-pay {
+    display: flex;
+    font-family: serif;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(99, 174, 228);
+    color: white;
+    width: 160px;
+    height: 60px;
+    border-radius: 10%;
+    border: none;
+    font-size: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+      background-color: rgb(80, 137, 180);
+      transform: scale(1.05);
+      transition: 0.5s;
+      font-size: 22px;
+    }
   }
 }

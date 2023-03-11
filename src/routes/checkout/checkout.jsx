@@ -1,5 +1,6 @@
 import "./checkout.style.scss";
 import {useContext} from "react";
+import {Link} from "react-router-dom";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.components";
 
@@ -7,6 +8,8 @@ import {CardContext} from "../../context/card.context";
 
 const Checkout = () => {
   const {cardItems, cardTotal} = useContext(CardContext);
+  const {clearDropdown} = useContext(CardContext);
+  const clearDropdowHandler = () => clearDropdown(null);
   return (
     <div className="checkout-container">
       <div className="checkout-header">
@@ -30,7 +33,16 @@ const Checkout = () => {
       {cardItems.map((cardItem) => {
         return <CheckoutItem key={cardItem.id} cardItem={cardItem} />;
       })}
-      <span className="total">Total : {cardTotal} €</span>
+      <span className="total">
+        Total : {cardTotal} €
+        <Link
+          onClick={clearDropdowHandler}
+          to="/payment"
+          className="button-pay"
+        >
+          Pay now
+        </Link>
+      </span>
     </div>
   );
 };
