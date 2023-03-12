@@ -39,7 +39,7 @@ export const Body = styled.div`
 
 export const DirectoryItemContainerComponent = styled(Link)`
   min-width: 30%;
-  height: 240px;
+  height: 300px;
 
   flex: 1 1 auto;
   display: flex;

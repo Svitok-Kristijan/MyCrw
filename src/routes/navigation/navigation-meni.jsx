@@ -1,8 +1,10 @@
 import {Fragment, useContext} from "react";
 import {Outlet, Link} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {ReactComponent as CrwnLogo} from "../../assets/crown.svg";
 import CardIcon from "../../components/card-icon/card-icon.component";
 import CardDropdown from "../../components/card-dropdown/card-dropdown.component";
+import {selectCurrentUser} from "../../store/user/user.selector";
 
 import {UserContext} from "../../context/user.context";
 import {CardContext} from "../../context/card.context";
@@ -15,7 +17,7 @@ import {
 } from "./navigation.style";
 
 const Navigation = () => {
-  const {currentUser, setCurrentUser} = useContext(UserContext);
+  const currentUser = useSelector(selectCurrentUser);
   const {isCardOpen} = useContext(CardContext);
 
   return (
