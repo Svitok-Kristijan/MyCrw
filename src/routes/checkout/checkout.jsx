@@ -1,15 +1,17 @@
 import "./checkout.style.scss";
-import {useContext} from "react";
+import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-
+import {useDispatch} from "react-redux";
 import CheckoutItem from "../../components/checkout-item/checkout-item.components";
-
-import {CardContext} from "../../context/card.context";
+import {clearDropdown} from "../../store/card/card.action";
+import {selectCardItems, selectCardTotal} from "../../store/card/card.selector";
 
 const Checkout = () => {
-  const {cardItems, cardTotal} = useContext(CardContext);
-  const {clearDropdown} = useContext(CardContext);
-  const clearDropdowHandler = () => clearDropdown(null);
+  const dispatch = useDispatch();
+  const cardItems = useSelector(selectCardItems);
+  const cardTotal = useSelector(selectCardTotal);
+
+  const clearDropdowHandler = () => dispatch(clearDropdown(null));
   return (
     <div className="checkout-container">
       <div className="checkout-header">

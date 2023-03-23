@@ -1,14 +1,15 @@
-import {Fragment, useContext} from "react";
+import {Fragment} from "react";
 import {Outlet, Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import {ReactComponent as CrwnLogo} from "../../assets/crown.svg";
 import CardIcon from "../../components/card-icon/card-icon.component";
 import CardDropdown from "../../components/card-dropdown/card-dropdown.component";
 import {selectCurrentUser} from "../../store/user/user.selector";
 
 import {UserContext} from "../../context/user.context";
-import {CardContext} from "../../context/card.context";
-import {signOutUser} from "../../utils/firebase/firebase.utils";
+import {selectCardOpen} from "../../store/card/card.selector";
+import {signOutStart} from "../../store/user/user.action";
+
 import {
   NavigationContainer,
   LogoContainer,
@@ -17,8 +18,11 @@ import {
 } from "./navigation.style";
 
 const Navigation = () => {
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
-  const {isCardOpen} = useContext(CardContext);
+  const isCardOpen = useSelector(selectCardOpen);
+
+  const signOutUser = dispatch(signOutStart());
 
   return (
     <Fragment>

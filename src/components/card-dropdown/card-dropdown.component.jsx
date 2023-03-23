@@ -3,17 +3,19 @@ import {
   EmptyMessage,
   CardItems,
 } from "./card-dropdown.style";
-import {useContext} from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {Link} from "react-router-dom";
-
+import {selectCardItems} from "../../store/card/card.selector";
+import {setIsCardOpen} from "../../store/card/card.action";
 import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
 import CardItem from "../directory-item/card-item.component";
-import {CardContext} from "../../context/card.context";
 
 const CardDropdown = () => {
-  const {cardItems} = useContext(CardContext);
-  const {isCardOpen, setIsCardOpen} = useContext(CardContext);
-  const toogleIsCardClose = () => setIsCardOpen(false);
+  const dispatch = useDispatch();
+  // const {cardItems} = useContext(CardContext);
+  const cardItems = useSelector(selectCardItems);
+  //const {isCardOpen, setIsCardOpen} = useContext(CardContext);
+  const toogleIsCardClose = () => dispatch(setIsCardOpen(false));
 
   return (
     <CardDropdownContainer>

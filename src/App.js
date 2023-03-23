@@ -8,24 +8,21 @@ import Payment from "./routes/payment/payment";
 import {useDispatch} from "react-redux";
 
 import {useEffect} from "react";
-import {setCurrentUser} from "./store/user/user.action";
-import {
-  onAuthStateChangeListener,
-  createUserElementFromAuth,
-} from "./utils/firebase/firebase.utils";
+import {checkUserSession} from "./store/user/user.action";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    const unsubscribe = onAuthStateChangeListener((user) => {
+    dispatch(checkUserSession());
+    /*const unsubscribe = onAuthStateChangeListener((user) => {
       if (user) {
         createUserElementFromAuth(user);
       }
       dispatch(setCurrentUser(user));
     });
 
-    return unsubscribe;
-  }, [dispatch]);
+    return unsubscribe;*/
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>

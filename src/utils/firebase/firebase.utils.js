@@ -19,6 +19,7 @@ import {
   writeBatch,
   query,
   getDocs,
+  QuerySnapshot,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -68,13 +69,11 @@ export const getCategoryAndDocuments = async () => {
   const q = query(collectionRef);
 
   const querrySnapshot = await getDocs(q);
-  const categoryMap = querrySnapshot.docs.reduce((acc, docSnapshot) => {
-    const {title, items} = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
+  return querrySnapshot.docs.map((docsSnapshot) => docsSnapshot.data());
 
-  return categoryMap;
+  /* */
+
+  //return categoryMap;
 };
 
 export const createUserElementFromAuth = async (
@@ -100,7 +99,7 @@ export const createUserElementFromAuth = async (
       console.log("error creating the user", error.message);
     }
   }
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -118,3 +117,16 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangeListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};

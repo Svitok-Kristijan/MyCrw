@@ -2,11 +2,9 @@ import {useState} from "react";
 import FormInput from "../form-input/form-input.component";
 import "./sing-up.style.scss";
 import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
+import {useDispatch} from "react-redux";
 
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserElementFromAuth,
-} from "../../utils/firebase/firebase.utils";
+import {signUpStart} from "../../store/user/user.action";
 
 const defaultFormFields = {
   displayName: "",
@@ -16,6 +14,7 @@ const defaultFormFields = {
 };
 
 const SingUp = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const {displayName, email, password, confirmPassword} = formFields;
 
@@ -32,9 +31,7 @@ const SingUp = () => {
     }
 
     try {
-      const {user} = await createAuthUserWithEmailAndPassword(email, password);
-
-      await createUserElementFromAuth(user, {displayName});
+      dispatch(signUpStart(email, password, displayName));
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         alert("This email already exists");

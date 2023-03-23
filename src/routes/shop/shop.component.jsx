@@ -5,19 +5,14 @@ import "./shop-style.scss";
 import {useDispatch} from "react-redux";
 
 import {useEffect} from "react";
-import {getCategoryAndDocuments} from "../../utils/firebase/firebase.utils";
-import {setCategoriesMap} from "../../store/category/categories.action";
+
+import {fetchCategoriesStart} from "../../store/category/categories.action";
 
 const Shop = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getCategoriesMap = async () => {
-      const categoryMap = await getCategoryAndDocuments("categories");
-      dispatch(setCategoriesMap(categoryMap));
-    };
-
-    getCategoriesMap();
+    dispatch(fetchCategoriesStart());
   }, []);
 
   return (

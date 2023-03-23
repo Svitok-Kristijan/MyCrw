@@ -1,6 +1,5 @@
-import {useContext} from "react";
 import {CardContext} from "../../context/card.context";
-
+import {useSelector, useDispatch} from "react-redux";
 import {
   ProductCardContainer,
   Footer,
@@ -8,12 +7,15 @@ import {
   SpanPrice,
 } from "./product-card.styles";
 import Button, {BUTTON_TYPE_CLASSES} from "../button/button.component";
+import {addItemToCard} from "../../store/card/card.action";
+import {selectCardItems} from "../../store/card/card.selector";
 
 const ProductCard = ({product}) => {
+  const dispatch = useDispatch();
   const {imageUrl, name, price} = product;
-  const {addItemToCard} = useContext(CardContext);
+  const itemCard = useSelector(selectCardItems);
 
-  const addProductToCard = () => addItemToCard(product);
+  const addProductToCard = () => dispatch(addItemToCard(itemCard, product));
   return (
     <ProductCardContainer>
       <img src={imageUrl} alt={`${name}`} />
